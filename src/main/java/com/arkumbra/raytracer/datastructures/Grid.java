@@ -5,13 +5,16 @@ import java.lang.reflect.Array;
 public class Grid <T> {
 
   private T[][] data;
-//  private final Object[][] data;
 
   @SuppressWarnings("unchecked")
-  public Grid(Class clazz, int width, int height) {
+  public Grid(Class clazz, int width, int height, T initValue) {
     this.data = (T[][])Array.newInstance(clazz, width, height);
-//    this.data = new Object[width][height];
 
+    for (int x = 0; x < width; x++) {
+      for (int y = 0; y < height; y++) {
+        data[x][y] = initValue;
+      }
+    }
   }
 
   public T get(int x, int y) {

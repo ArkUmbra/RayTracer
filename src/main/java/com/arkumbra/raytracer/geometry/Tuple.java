@@ -9,7 +9,7 @@ public class Tuple {
   private double z;
   private double w;
 
-  protected Tuple(double x, double y, double z, double w) {
+  public Tuple(double x, double y, double z, double w) {
     this.x = x;
     this.y = y;
     this.z = z;
