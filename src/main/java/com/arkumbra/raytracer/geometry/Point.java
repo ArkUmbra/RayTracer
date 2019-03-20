@@ -2,13 +2,13 @@ package com.arkumbra.raytracer.geometry;
 
 public class Point extends Tuple {
 
-  private static final float POINT_W = 1;
+  private static final double POINT_W = 1;
 
-  public Point(float x, float y, float z) {
+  public Point(double x, double y, double z) {
     super(x, y, z, POINT_W);
   }
 
-  public Point(float x, float y, float z, float w) {
+  public Point(double x, double y, double z, double w) {
     super(x, y, z, w);
   }
 

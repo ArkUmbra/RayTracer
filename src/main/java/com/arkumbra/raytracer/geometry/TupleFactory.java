@@ -7,7 +7,7 @@ public class TupleFactory {
   private static final float VECTOR_W = 0;
 
 
-  public static Tuple create(float x, float y, float z, float w) {
+  public static Tuple create(double x, double y, double z, double w) {
     if (approxEqual(w, VECTOR_W)) {
       return new Vector(x, y, z);
 
@@ -26,7 +26,7 @@ public class TupleFactory {
 //    }
   }
 
-  public static Tuple create(Class<? extends Tuple> clazz, float x, float y, float z, float w) {
+  public static Tuple create(Class<? extends Tuple> clazz, double x, double y, double z, double w) {
     if (clazz.equals(Vector.class)) {
       return new Vector(x, y, z, w);
 

@@ -4,9 +4,9 @@ import com.arkumbra.raytracer.geometry.Tuple;
 
 public class Colour extends Tuple {
 
-  private static final float COLOUR_W = 0;
+  private static final double COLOUR_W = 0;
 
-  protected Colour(float x, float y, float z) {
+  protected Colour(double x, double y, double z) {
     super(x, y, z, COLOUR_W);
   }
 }

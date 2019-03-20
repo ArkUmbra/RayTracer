@@ -9,32 +9,32 @@ public class TupleGeometryTest {
 
   @Test
   public void testPointHasWOf1() {
-    Tuple p = new Point(1.0f,4.2f, -9.3f);
+    Tuple p = new Point(1.0,4.2, -9.3);
 
     assertEquals(1, p.w(), 0.0001);
   }
 
   @Test
   public void testVectorHasWOf0() {
-    Tuple p = new Vector(1.0f,4.2f, -9.3f);
+    Tuple p = new Vector(1.0,4.2, -9.3);
 
     assertEquals(0, p.w(), 0.0001);
   }
 
   @Test
   public void testEqualityOfTwoTuples() {
-    Tuple p1 = TupleFactory.create(1.0f,4.2f, -9.3f, 1.0f);
-    Tuple p2 = TupleFactory.create(1.0f,4.2f, -9.3f, 1.0f);
+    Tuple p1 = TupleFactory.create(1.0,4.2, -9.3, 1.0);
+    Tuple p2 = TupleFactory.create(1.0,4.2, -9.3, 1.0);
 
     assertEquals(p1, p2);
   }
 
   @Test
   public void testAddingPointToVector() {
-    Tuple p1 = new Point(1.0f,2.0f, 4.0f);
-    Tuple v1 = new Vector(2.0f,4.0f, 8.0f);
+    Tuple p1 = new Point(1.0,2.0, 4.0);
+    Tuple v1 = new Vector(2.0,4.0, 8.0);
 
-    Tuple expected = new Point(3.0f, 6.0f, 12.0f);
+    Tuple expected = new Point(3.0, 6.0, 12.0);
 
     Tuple result = p1.add(v1);
 
@@ -44,10 +44,10 @@ public class TupleGeometryTest {
 
   @Test
   public void testAddingVectorToVector() {
-    Tuple v1 = new Vector(1.0f,2.0f, 4.0f);
-    Tuple v2 = new Vector(2.0f,4.0f, 8.0f);
+    Tuple v1 = new Vector(1.0,2.0, 4.0);
+    Tuple v2 = new Vector(2.0,4.0, 8.0);
 
-    Tuple expected = new Vector(3.0f, 6.0f, 12.0f);
+    Tuple expected = new Vector(3.0, 6.0, 12.0);
 
     Tuple result = v1.add(v2);
 
@@ -57,18 +57,18 @@ public class TupleGeometryTest {
 
 //  @Test(expected = RuntimeException.class)
 //  public void testAddingPointToPoint() {
-//    Tuple p1 = new Point(1.0f,2.0f, 4.0f);
-//    Tuple p2 = new Point(2.0f,4.0f, 8.0f);
+//    Tuple p1 = new Point(1.0,2.0, 4.0);
+//    Tuple p2 = new Point(2.0,4.0, 8.0);
 //
 //    p1.add(p2);
 //  }
 
   @Test
   public void testSubtractingPointFromPoint() {
-    Tuple p1 = new Point(3.0f,2.0f, 1.0f);
-    Tuple p2 = new Point(5.0f,6.0f, 7.0f);
+    Tuple p1 = new Point(3.0,2.0, 1.0);
+    Tuple p2 = new Point(5.0,6.0, 7.0);
 
-    Tuple expected = new Vector(-2f, -4f, -6f);
+    Tuple expected = new Vector(-2, -4, -6);
 
     Tuple result = p1.minus(p2);
 
@@ -78,10 +78,10 @@ public class TupleGeometryTest {
 
   @Test
   public void testSubtractingVectorFromPoint() {
-    Tuple p1 = new Point(-2.0f,-4.0f, -8.0f);
-    Tuple v1 = new Vector(1.0f,2.0f, 4.0f);
+    Tuple p1 = new Point(-2.0,-4.0, -8.0);
+    Tuple v1 = new Vector(1.0,2.0, 4.0);
 
-    Tuple expected = new Point(-3.0f, -6.0f, -12.0f);
+    Tuple expected = new Point(-3.0, -6.0, -12.0);
 
     Tuple result = p1.minus(v1);
 
@@ -91,10 +91,10 @@ public class TupleGeometryTest {
 
   @Test
   public void testSubtractingVectorFromVector() {
-    Tuple v1 = new Vector(3.0f,2.0f, 1.0f);
-    Tuple v2 = new Vector(5.0f,6.0f, 7.0f);
+    Tuple v1 = new Vector(3.0,2.0, 1.0);
+    Tuple v2 = new Vector(5.0,6.0, 7.0);
 
-    Tuple expected = new Vector(-2f, -4f, -6f);
+    Tuple expected = new Vector(-2, -4, -6);
 
     Tuple result = v1.minus(v2);
 
@@ -104,17 +104,17 @@ public class TupleGeometryTest {
 
 //  @Test(expected = RuntimeException.class)
 //  public void testSubtractingPointFromVector() {
-//    Tuple v1 = new Vector(1.0f,2.0f, 4.0f);
-//    Tuple p1 = new Point(-2.0f,-4.0f, -8.0f);
+//    Tuple v1 = new Vector(1.0,2.0, 4.0);
+//    Tuple p1 = new Point(-2.0,-4.0, -8.0);
 //
 //    v1.minus(p1);
 //  }
 
   @Test
   public void testNegatePoint() {
-    Tuple p1 = new Point(3.0f,2.0f, 1.0f, 6.0f);
+    Tuple p1 = new Point(3.0,2.0, 1.0, 6.0);
 
-    Tuple expected = new Point(-3f, -2f, -1f, -6f);
+    Tuple expected = new Point(-3, -2, -1, -6);
 
     Tuple result = p1.negate();
 
@@ -124,10 +124,10 @@ public class TupleGeometryTest {
 
   @Test
   public void testMultiplyVector() {
-    Tuple v1 = new Vector(1f,-2f, 3f, -4f);
-    float scalar = 3.5f;
+    Tuple v1 = new Vector(1,-2, 3, -4);
+    double scalar = 3.5;
 
-    Tuple expected = new Vector(3.5f, -7f, 10.5f, -14f);
+    Tuple expected = new Vector(3.5, -7, 10.5, -14);
 
     Tuple result = v1.multiple(scalar);
 
@@ -137,12 +137,12 @@ public class TupleGeometryTest {
 
   @Test
   public void testDivideVector() {
-    Tuple v1 = new Vector(1f,-2f, 3f, -4f);
-    float scalar = 3.5f;
+    Tuple v1 = new Vector(18, 33, 3, -9);
+    double scalar = 3;
 
-    Tuple expected = new Vector(3.5f, -7f, 10.5f, -14f);
+    Tuple expected = new Vector(6, 11, 1, -3);
 
-    Tuple result = v1.multiple(scalar);
+    Tuple result = v1.divide(scalar);
 
     assertTrue(result instanceof Vector);
     assertEquals(expected, result);
@@ -171,9 +171,9 @@ public class TupleGeometryTest {
   @Test
   public void testNormalizeWithNonIntegerResults() {
     Tuple t = new Vector(1, 2, 3);
-    Tuple expected = new Vector((float)(1/Math.sqrt(14)),
-        (float)(2/Math.sqrt(14)),
-        (float)(3/Math.sqrt(14)));
+    Tuple expected = new Vector((1/Math.sqrt(14)),
+        (2/Math.sqrt(14)),
+        (3/Math.sqrt(14)));
 
     Tuple normalized = t.normalize();
 
@@ -185,16 +185,11 @@ public class TupleGeometryTest {
     Tuple v1 = new Vector(1, 2, 3);
     Tuple v2 = new Vector(2, 3, 4);
 
-    float expected = 20f;
-    float answer = v1.dotProd(v2);
+    double expected = 20;
+    double answer = v1.dotProd(v2);
 
     assertEquals(expected, answer, 0.00001d);
   }
-
-  /*Scenario: The cross product of two vectors Given a ← vector(1, 2, 3)
-And b ← vector(2, 3, 4)
-Then cross(a, b) = vector(-1, 2, -1)
-And cross(b, a) = vector(1, -2, 1)*/
 
   @Test
   public void testCrossProductOfTwoVectors() {
