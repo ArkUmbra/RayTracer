@@ -1,34 +1,34 @@
 package com.arkumbra.raytracer.geometry;
 
-// TODO double might end up being cleaner in the end... have had a few casts to float so far..
-
 /**
  * Immutable
  */
 public class Tuple {
-  private float x, y, z;
-  private float w;
+  private double x;
+  private double y;
+  private double z;
+  private double w;
 
-  protected Tuple(float x, float y, float z, float w) {
+  protected Tuple(double x, double y, double z, double w) {
     this.x = x;
     this.y = y;
     this.z = z;
     this.w = w;
   }
 
-  public float x() {
+  public double x() {
     return x;
   }
 
-  public float y() {
+  public double y() {
     return y;
   }
 
-  public float z() {
+  public double z() {
     return z;
   }
 
-  public float w() {
+  public double w() {
     return w;
   }
 
@@ -38,10 +38,10 @@ public class Tuple {
    * @return new Tuple instance
    */
   public Tuple add(Tuple other) {
-    float newX = this.x() + other.x();
-    float newY = this.y() + other.y();
-    float newZ = this.z() + other.z();
-    float newW = this.w() + other.w();
+    double newX = this.x() + other.x();
+    double newY = this.y() + other.y();
+    double newZ = this.z() + other.z();
+    double newW = this.w() + other.w();
 
     return TupleFactory.create(newX, newY, newZ, newW);
   }
@@ -52,10 +52,10 @@ public class Tuple {
    * @return new Tuple instance
    */
   public Tuple minus(Tuple other) {
-    float newX = this.x() - other.x();
-    float newY = this.y() - other.y();
-    float newZ = this.z() - other.z();
-    float newW = this.w() - other.w();
+    double newX = this.x() - other.x();
+    double newY = this.y() - other.y();
+    double newZ = this.z() - other.z();
+    double newW = this.w() - other.w();
 
     return TupleFactory.create(newX, newY, newZ, newW);
   }
@@ -65,11 +65,11 @@ public class Tuple {
    * @param scalar
    * @return new Tuple instance
    */
-  public Tuple multiple(float scalar) {
-    float newX = this.x() * scalar;
-    float newY = this.y() * scalar;
-    float newZ = this.z() * scalar;
-    float newW = this.w() * scalar;
+  public Tuple multiple(double scalar) {
+    double newX = this.x() * scalar;
+    double newY = this.y() * scalar;
+    double newZ = this.z() * scalar;
+    double newW = this.w() * scalar;
 
     return TupleFactory.create(getClass(), newX, newY, newZ, newW);
   }
@@ -79,11 +79,11 @@ public class Tuple {
    * @param scalar
    * @return new Tuple instance
    */
-  public Tuple divide(float scalar) {
-    float newX = this.x() * scalar;
-    float newY = this.y() * scalar;
-    float newZ = this.z() * scalar;
-    float newW = this.w() * scalar;
+  public Tuple divide(double scalar) {
+    double newX = this.x() / scalar;
+    double newY = this.y() / scalar;
+    double newZ = this.z() / scalar;
+    double newW = this.w() / scalar;
 
     return TupleFactory.create(getClass(), newX, newY, newZ, newW);
   }
@@ -93,22 +93,22 @@ public class Tuple {
    * @return new Tuple instance
    */
   public Tuple negate() {
-    float newX = - this.x();
-    float newY = - this.y();
-    float newZ = - this.z();
-    float newW = - this.w();
+    double newX = - this.x();
+    double newY = - this.y();
+    double newZ = - this.z();
+    double newW = - this.w();
 
     return TupleFactory.create(getClass(), newX, newY, newZ, newW);
   }
 
-  public float magnitude() {
-    return (float) Math.sqrt(
+  public double magnitude() {
+    return Math.sqrt(
         x*x + y*y + z*z + w*w
     );
   }
 
   public Tuple normalize() {
-    float mag = magnitude();
+    double mag = magnitude();
 
     return TupleFactory.create(
         x / mag,
@@ -117,20 +117,13 @@ public class Tuple {
         w / mag);
   }
 
-  public float dotProd(Tuple other) {
+  public double dotProd(Tuple other) {
     return x * other.x +
         y * other.y +
         z * other.z +
         w * other.w;
   }
 
-
-  /*
-  vector(a.y * b.z - a.z * b.y,
-    a.z * b.x - a.x * b.z,
-    a.x * b.y - a.y * b.x)
-
-   */
   public Tuple cross(Tuple other) {
     return TupleFactory.create(
         y * other.z - z * other.y,
