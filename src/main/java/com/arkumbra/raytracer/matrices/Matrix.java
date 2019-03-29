@@ -6,7 +6,6 @@ import com.arkumbra.raytracer.geometry.Tuple;
 // TODO I have a feeling 'width' and 'height' are being used in reverse in a couple of places
 // TODO Either take a look or just replace with 'dimension' for both
 public abstract class Matrix {
-
   private final int width, height;
   private final Double[][] data;
 
@@ -29,6 +28,10 @@ public abstract class Matrix {
 
   public final Double get(int row, int column) {
     return data[row][column];
+  }
+
+  public final void set(int row, int column, Double value) {
+    data[row][column] = value;
   }
 
   public Matrix4 transpose() {
@@ -138,7 +141,11 @@ public abstract class Matrix {
     return MatrixFactory.generateStandardMatrix(newData);
   }
 
-  public abstract Matrix getIdentity();
+  public Matrix getIdentity() {
+    return identity().clone();
+  }
+
+  protected abstract Matrix identity();
 
   public abstract Matrix multiply(Matrix other);
 
@@ -156,6 +163,18 @@ public abstract class Matrix {
     }
 
     return total;
+  }
+
+  public final Matrix clone() {
+    Double[][] newData = new Double[width][height];
+
+    for (int row = 0; row < width; row++) {
+      for (int col = 0; col < height; col++) {
+        newData[col][row] = this.get(col, row);
+      }
+    }
+
+    return new Matrix4(newData);
   }
 
   @Override

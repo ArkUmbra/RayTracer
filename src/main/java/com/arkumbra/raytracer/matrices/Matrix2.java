@@ -21,7 +21,7 @@ public class Matrix2 extends Matrix {
 
 
   @Override
-  public Matrix getIdentity() {
+  protected Matrix identity() {
     return IDENTITY;
   }
 

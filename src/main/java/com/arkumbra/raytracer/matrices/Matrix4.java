@@ -1,17 +1,22 @@
 package com.arkumbra.raytracer.matrices;
 
 import com.arkumbra.raytracer.geometry.Tuple;
+import com.arkumbra.raytracer.geometry.TupleFactory;
 
 public class Matrix4 extends Matrix {
   private static final int WIDTH = 4;
   private static final int HEIGHT = 4;
 
-  public static final Matrix4 IDENTITY = new Matrix4(new Double[][]{
+  private static final Matrix4 IDENTITY = new Matrix4(new Double[][]{
       {1d,0d,0d,0d},
       {0d,1d,0d,0d},
       {0d,0d,1d,0d},
       {0d,0d,0d,1d},
   });
+
+  public static Matrix getIdent() {
+    return IDENTITY.clone();
+  }
 
   public Matrix4() {
     super(WIDTH, HEIGHT);
@@ -22,7 +27,7 @@ public class Matrix4 extends Matrix {
   }
 
   @Override
-  public Matrix getIdentity() {
+  protected Matrix identity() {
     return IDENTITY;
   }
 
@@ -55,7 +60,7 @@ public class Matrix4 extends Matrix {
                 this.get(row, 3) * tuple.w();
     }
 
-    return new Tuple(tupleData[0], tupleData[1],tupleData[2],tupleData[3]);
+    return TupleFactory.create(tupleData[0], tupleData[1],tupleData[2],tupleData[3]);
   }
 
   @Override

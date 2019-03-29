@@ -5,11 +5,14 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
 
+import com.arkumbra.raytracer.geometry.Point;
+import com.arkumbra.raytracer.geometry.Vector;
 import com.arkumbra.raytracer.matrices.Matrix;
 import com.arkumbra.raytracer.matrices.Matrix2;
 import com.arkumbra.raytracer.matrices.Matrix3;
 import com.arkumbra.raytracer.matrices.Matrix4;
 import com.arkumbra.raytracer.geometry.Tuple;
+import com.arkumbra.raytracer.matrices.MatrixFactory;
 import org.junit.Test;
 
 public class MatrixTest {
@@ -174,7 +177,7 @@ public class MatrixTest {
   public void testMultiplyTupleByIdentityMatrixRetainsSameValue() {
     Tuple tuple = new Tuple(1d,2d,3d,4d);
 
-    assertEquals(tuple, Matrix4.IDENTITY.multiply(tuple));
+    assertEquals(tuple, Matrix4.getIdent().multiply(tuple));
   }
 
   /*
@@ -214,7 +217,7 @@ public class MatrixTest {
    */
   @Test
   public void testTransposingIdentityMatrixReturnsSame() {
-    assertEquals(Matrix4.IDENTITY, Matrix4.IDENTITY.transpose());
+    assertEquals(Matrix4.getIdent(), Matrix4.getIdent().transpose());
   }
 
 
@@ -595,6 +598,341 @@ Then C * inverse(B) = A
 
     Matrix matrixC = matrixA.multiply(matrixB);
     assertEquals(matrixA, matrixC.multiply(matrixB.invert()));
-
   }
+
+  /*
+    Scenario: Multiplying by a translation matrix
+      Given transform ← translation(5, -3, 2)
+      And p ← point(-3, 4, 5)
+      Then transform * p = point(2, 1, 7)
+  */
+  @Test
+  public void testMultiplyingByTranslationMatrix() {
+    Matrix transform = MatrixFactory.translation(5, -3, 2);
+    Point point = new Point(-3, 4, 5);
+
+    Point expected = new Point(2,1,7);
+    assertEquals(expected, transform.multiply(point));
+  }
+
+  /*
+  Scenario: Multiplying by the inverse of a translation matrix
+    Given transform ← translation(5, -3, 2)
+      And inv ← inverse(transform)
+      And p ← point(-3, 4, 5)
+    Then inv * p = point(-8, 7, 3)
+  */
+  @Test
+  public void testMultiplyingInvertedTranslationMatrix() {
+    Matrix transform = MatrixFactory.translation(5, -3, 2);
+    Matrix inverted = transform.invert();
+    Point point = new Point(-3, 4, 5);
+
+    Point expected = new Point(-8,7,3);
+    assertEquals(expected, inverted.multiply(point));
+  }
+
+  /*
+  Scenario: Translation does not affect vectors
+    Given transform ← translation(5, -3, 2)
+      And v ← vector(-3, 4, 5)
+    Then transform * v = v
+   */
+  @Test
+  public void testTransformationDoesNotAffectVectors() {
+    Matrix transform = MatrixFactory.translation(5, -3, 2);
+    Vector vector = new Vector(-3, 4, 5);
+
+    assertEquals(vector, transform.multiply(vector));
+  }
+
+  @Test
+  public void testMatrix4IdentityAlwaysReturnsAClone() {
+    Matrix transform = Matrix4.getIdent();
+    transform.set(0,0,45d);
+
+    Matrix transform2 = Matrix4.getIdent();
+    assertNotEquals(45d, transform2.get(0,0));
+  }
+
+  /*
+  Scenario: A scaling matrix applied to a point
+    Given transform ← scaling(2, 3, 4)
+      And p ← point(-4, 6, 8)
+    Then transform * p = point(-8, 18, 32)
+  */
+  @Test
+  public void testScalingMatrixAppliedToPoint() {
+    Matrix scaling = MatrixFactory.generateScaling(2, 3, 4);
+    Point point = new Point(-4, 6, 8);
+
+    Point expected = new Point(-8,18,32);
+    assertEquals(expected, scaling.multiply(point));
+  }
+
+  /*
+  Scenario: A scaling matrix applied to a vector
+    Given transform ← scaling(2, 3, 4)
+      And v ← vector(-4, 6, 8)
+    Then transform * v = vector(-8, 18, 32)
+  */
+  @Test
+  public void testScalingMatrixAppliedToVector() {
+    Matrix scaling = MatrixFactory.generateScaling(2, 3, 4);
+    Vector vector = new Vector(-4, 6, 8);
+
+    Vector expected = new Vector(-8,18,32);
+    assertEquals(expected, scaling.multiply(vector));
+  }
+
+  /*
+  Scenario: Multiplying by the inverse of a scaling matrix
+    Given transform ← scaling(2, 3, 4)
+      And inv ← inverse(transform)
+      And v ← vector(-4, 6, 8)
+    Then inv * v = vector(-2, 2, 2)
+  */
+  @Test
+  public void testMultiplyingByTheInverseOfScalingMatrix() {
+    Matrix scaling = MatrixFactory.generateScaling(2, 3, 4);
+    Matrix inv = scaling.invert();
+    Vector vector = new Vector(-4, 6, 8);
+
+    Vector expected = new Vector(-2,2,2);
+    assertEquals(expected, inv.multiply(vector));
+  }
+
+  /*
+  Scenario: Reflection is scaling by a negative value
+    Given transform ← scaling(-1, 1, 1)
+      And p ← point(2, 3, 4)
+    Then transform * p = point(-2, 3, 4)
+  */
+  @Test
+  public void testReflectionIsScalingByNegativeValue() {
+    Matrix scaling = MatrixFactory.generateScaling(-1, 1, 1);
+    Point point = new Point(2, 3, 4);
+
+    Point expected = new Point(-2,3,4);
+    assertEquals(expected, scaling.multiply(point));
+  }
+
+  /*
+  Scenario: Rotating a point around the x axis
+    Given p ← point(0, 1, 0)
+      And half_quarter ← rotation_x(π / 4)
+      And full_quarter ← rotation_x(π / 2)
+    Then half_quarter * p = point(0, √2/2, √2/2)
+      And full_quarter * p = point(0, 0, 1)
+   */
+  @Test
+  public void testRotatingPointAroundXAxis() {
+    Point point = new Point(0, 1, 0);
+    Matrix eighth = MatrixFactory.rotationX(Math.PI / 4);
+    Matrix quarter = MatrixFactory.rotationX(Math.PI / 2);
+
+
+    assertEquals(new Point(0, Math.sqrt(2)/2, Math.sqrt(2)/2),
+        eighth.multiply(point));
+    assertEquals(new Point(0, 0, 1),
+        quarter.multiply(point));
+  }
+
+  /*
+  Scenario: The inverse of an x-rotation rotates in the opposite direction
+    Given p ← point(0, 1, 0)
+      And half_quarter ← rotation_x(π / 4)
+      And inv ← inverse(half_quarter)
+    Then inv * p = point(0, √2/2, -√2/2)
+   */
+  @Test
+  public void testInverseOfXRotationRotatesInOppositeDirection() {
+    Point point = new Point(0, 1, 0);
+    Matrix eighth = MatrixFactory.rotationX(Math.PI / 4);
+    Matrix invert = eighth.invert();
+
+    assertEquals(new Point(0, Math.sqrt(2)/2, -Math.sqrt(2)/2),
+        invert.multiply(point));
+  }
+
+  /*
+  Scenario: Rotating a point around the y axis
+    Given p ← point(0, 0, 1)
+      And half_quarter ← rotation_y(π / 4)
+      And full_quarter ← rotation_y(π / 2)
+    Then half_quarter * p = point(√2/2, 0, √2/2)
+      And full_quarter * p = point(1, 0, 0)
+   */
+  @Test
+  public void testRotatingPointAroundYAxis() {
+    Point point = new Point(0, 0, 1);
+    Matrix eighth = MatrixFactory.rotationY(Math.PI / 4);
+    Matrix quarter = MatrixFactory.rotationY(Math.PI / 2);
+
+
+    assertEquals(new Point(Math.sqrt(2)/2, 0, Math.sqrt(2)/2),
+        eighth.multiply(point));
+    assertEquals(new Point(1, 0, 0),
+        quarter.multiply(point));
+  }
+
+  /*
+  Scenario: Rotating a point around the z axis
+    Given p ← point(0, 1, 0)
+      And half_quarter ← rotation_z(π / 4)
+      And full_quarter ← rotation_z(π / 2)
+    Then half_quarter * p = point(-√2/2, √2/2, 0)
+      And full_quarter * p = point(-1, 0, 0)
+  */
+  @Test
+  public void testRotatingPointAroundZAxis() {
+    Point point = new Point(0, 1, 0);
+    Matrix eighth = MatrixFactory.rotationZ(Math.PI / 4);
+    Matrix quarter = MatrixFactory.rotationZ(Math.PI / 2);
+
+
+    assertEquals(new Point(-Math.sqrt(2)/2, Math.sqrt(2)/2, 0),
+        eighth.multiply(point));
+    assertEquals(new Point(-1, 0, 0),
+        quarter.multiply(point));
+  }
+
+  /*
+  Scenario: A shearing transformation moves x in proportion to y
+  Given transform ← shearing(1, 0, 0, 0, 0, 0)
+  And p ← point(2, 3, 4)
+  Then transform * p = point(5, 3, 4)
+   */
+  @Test
+  public void testShearingXInProportionToY() {
+    Matrix transform = MatrixFactory.shearing(1, 0, 0, 0, 0, 0);
+    Point p = new Point(2, 3, 4);
+
+    assertEquals(new Point(5, 3, 4), transform.multiply(p));
+  }
+
+  /*
+  Scenario: A shearing transformation moves x in proportion to z
+  Given transform ← shearing(0, 1, 0, 0, 0, 0)
+  And p ← point(2, 3, 4)
+  Then transform * p = point(6, 3, 4)
+  */
+  @Test
+  public void testShearingXInProportionToZ() {
+    Matrix transform = MatrixFactory.shearing(0, 1, 0, 0, 0, 0);
+    Point p = new Point(2, 3, 4);
+
+    assertEquals(new Point(6, 3, 4), transform.multiply(p));
+  }
+
+  /*
+  Scenario: A shearing transformation moves y in proportion to x
+  Given transform ← shearing(0, 0, 1, 0, 0, 0)
+  And p ← point(2, 3, 4)
+  Then transform * p = point(2, 5, 4)
+  */
+  @Test
+  public void testShearingYInProportionToX() {
+    Matrix transform = MatrixFactory.shearing(0, 0, 1, 0, 0, 0);
+    Point p = new Point(2, 3, 4);
+
+    assertEquals(new Point(2, 5, 4), transform.multiply(p));
+  }
+
+  /*
+  Scenario: A shearing transformation moves y in proportion to z
+  Given transform ← shearing(0, 0, 0, 1, 0, 0)
+  And p ← point(2, 3, 4)
+  Then transform * p = point(2, 7, 4)
+  */
+  @Test
+  public void testShearingYInProportionToZ() {
+    Matrix transform = MatrixFactory.shearing(0, 0, 0, 1, 0, 0);
+    Point p = new Point(2, 3, 4);
+
+    assertEquals(new Point(2, 7, 4), transform.multiply(p));
+  }
+
+  /*
+  Scenario: A shearing transformation moves z in proportion to x
+  Given transform ← shearing(0, 0, 0, 0, 1, 0)
+  And p ← point(2, 3, 4)
+  Then transform * p = point(2, 3, 6)
+  */
+  @Test
+  public void testShearingZInProportionToX() {
+    Matrix transform = MatrixFactory.shearing(0, 0, 0, 0, 1, 0);
+    Point p = new Point(2, 3, 4);
+
+    assertEquals(new Point(2, 3, 6), transform.multiply(p));
+  }
+
+  /*
+  Scenario: A shearing transformation moves z in proportion to y
+  Given transform ← shearing(0, 0, 0, 0, 0, 1)
+  And p ← point(2, 3, 4)
+  Then transform * p = point(2, 3, 7)
+   */
+  @Test
+  public void testShearingZInProportionToY() {
+    Matrix transform = MatrixFactory.shearing(0, 0, 0, 0, 0, 1);
+    Point p = new Point(2, 3, 4);
+
+    assertEquals(new Point(2, 3, 7), transform.multiply(p));
+  }
+
+  /**
+   *  Scenario: Individual transformations are applied in sequence
+   Given p ← point(1, 0, 1)
+   And A ← rotation_x(π / 2)
+   And B ← scaling(5, 5, 5)
+   And C ← translation(10, 5, 7)
+   # apply rotation first
+   When p2 ← A * p
+   Then p2 = point(1, -1, 0)
+   # then apply scaling
+   When p3 ← B * p2
+   Then p3 = point(5, -5, 0)
+   # then apply translation
+   When p4 ← C * p3
+   Then p4 = point(15, 0, 7)
+   */
+  @Test
+  public void testIndividualTransformationsAreAppliedInSequence() {
+    Point p = new Point(1, 0, 1);
+    Matrix aRotate= MatrixFactory.rotationX(Math.PI / 2);
+    Matrix bScale = MatrixFactory.generateScaling(5, 5, 5);
+    Matrix cTranslate = MatrixFactory.translation(10, 5, 7);
+
+    Tuple p2 = aRotate.multiply(p);
+    assertEquals(new Point(1, -1, 0), p2);
+
+    Tuple p3 = bScale.multiply(p2);
+    assertEquals(new Point(5, -5, 0), p3);
+
+    Tuple p4 = cTranslate.multiply(p3);
+    assertEquals(new Point(15, 0, 7), p4);
+  }
+
+
+   /**
+   * Scenario: Chained transformations must be applied in reverse order
+   Given p ← point(1, 0, 1)
+   And A ← rotation_x(π / 2)
+   And B ← scaling(5, 5, 5)
+   And C ← translation(10, 5, 7)
+   When T ← C * B * A
+   Then T * p = point(15, 0, 7)
+   */
+   @Test
+   public void testChainedTransformationsMustBeAppliedInReverse() {
+     Point p = new Point(1, 0, 1);
+     Matrix aRotate= MatrixFactory.rotationX(Math.PI / 2);
+     Matrix bScale = MatrixFactory.generateScaling(5, 5, 5);
+     Matrix cTranslate = MatrixFactory.translation(10, 5, 7);
+
+     Matrix transform = cTranslate.multiply(bScale).multiply(aRotate);
+     assertEquals(new Point(15, 0, 7), transform.multiply(p));
+   }
+
 }

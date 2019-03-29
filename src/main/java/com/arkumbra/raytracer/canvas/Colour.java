@@ -4,6 +4,9 @@ import com.arkumbra.raytracer.geometry.Tuple;
 
 public class Colour extends Tuple {
 
+  public static final Colour BLACK = new Colour(0, 0, 0);
+  public static final Colour WHITE = new Colour(255, 255, 255);
+
   private static final String SPACE = " ";
   private static final double COLOUR_W = 0;
 
