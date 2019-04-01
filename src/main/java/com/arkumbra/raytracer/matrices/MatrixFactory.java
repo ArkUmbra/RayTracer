@@ -48,7 +48,7 @@ public class MatrixFactory {
     return identity;
   }
 
-  public static Matrix generateScaling(double x, double y, double z) {
+  public static Matrix scaling(double x, double y, double z) {
     Matrix identity = Matrix4.getIdent();
     identity.set(0, 0, x);
     identity.set(1, 1, y);

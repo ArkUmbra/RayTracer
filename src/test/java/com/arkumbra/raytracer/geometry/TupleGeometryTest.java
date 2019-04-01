@@ -192,6 +192,17 @@ public class TupleGeometryTest {
   }
 
   @Test
+  public void testDotProductUsingNumbersLessThanOne() {
+    Tuple v1 = new Vector(0, 0, 0.9);
+    Tuple v2 = new Vector(0, 0, 0.9);
+
+    double expected = 0.81;
+    double answer = v1.dotProd(v2);
+
+    assertEquals(expected, answer, 0.00001d);
+  }
+
+  @Test
   public void testCrossProductOfTwoVectors() {
     Tuple a = new Vector(1, 2, 3);
     Tuple b = new Vector(2, 3, 4);

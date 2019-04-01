@@ -663,7 +663,7 @@ Then C * inverse(B) = A
   */
   @Test
   public void testScalingMatrixAppliedToPoint() {
-    Matrix scaling = MatrixFactory.generateScaling(2, 3, 4);
+    Matrix scaling = MatrixFactory.scaling(2, 3, 4);
     Point point = new Point(-4, 6, 8);
 
     Point expected = new Point(-8,18,32);
@@ -678,7 +678,7 @@ Then C * inverse(B) = A
   */
   @Test
   public void testScalingMatrixAppliedToVector() {
-    Matrix scaling = MatrixFactory.generateScaling(2, 3, 4);
+    Matrix scaling = MatrixFactory.scaling(2, 3, 4);
     Vector vector = new Vector(-4, 6, 8);
 
     Vector expected = new Vector(-8,18,32);
@@ -694,7 +694,7 @@ Then C * inverse(B) = A
   */
   @Test
   public void testMultiplyingByTheInverseOfScalingMatrix() {
-    Matrix scaling = MatrixFactory.generateScaling(2, 3, 4);
+    Matrix scaling = MatrixFactory.scaling(2, 3, 4);
     Matrix inv = scaling.invert();
     Vector vector = new Vector(-4, 6, 8);
 
@@ -710,7 +710,7 @@ Then C * inverse(B) = A
   */
   @Test
   public void testReflectionIsScalingByNegativeValue() {
-    Matrix scaling = MatrixFactory.generateScaling(-1, 1, 1);
+    Matrix scaling = MatrixFactory.scaling(-1, 1, 1);
     Point point = new Point(2, 3, 4);
 
     Point expected = new Point(-2,3,4);
@@ -901,7 +901,7 @@ Then C * inverse(B) = A
   public void testIndividualTransformationsAreAppliedInSequence() {
     Point p = new Point(1, 0, 1);
     Matrix aRotate= MatrixFactory.rotationX(Math.PI / 2);
-    Matrix bScale = MatrixFactory.generateScaling(5, 5, 5);
+    Matrix bScale = MatrixFactory.scaling(5, 5, 5);
     Matrix cTranslate = MatrixFactory.translation(10, 5, 7);
 
     Tuple p2 = aRotate.multiply(p);
@@ -928,7 +928,7 @@ Then C * inverse(B) = A
    public void testChainedTransformationsMustBeAppliedInReverse() {
      Point p = new Point(1, 0, 1);
      Matrix aRotate= MatrixFactory.rotationX(Math.PI / 2);
-     Matrix bScale = MatrixFactory.generateScaling(5, 5, 5);
+     Matrix bScale = MatrixFactory.scaling(5, 5, 5);
      Matrix cTranslate = MatrixFactory.translation(10, 5, 7);
 
      Matrix transform = cTranslate.multiply(bScale).multiply(aRotate);
