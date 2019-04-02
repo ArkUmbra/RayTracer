@@ -129,7 +129,7 @@ public class TupleGeometryTest {
 
     Tuple expected = new Vector(3.5, -7, 10.5, -14);
 
-    Tuple result = v1.multiple(scalar);
+    Tuple result = v1.multiply(scalar);
 
     assertTrue(result instanceof Vector);
     assertEquals(expected, result);
@@ -214,5 +214,38 @@ public class TupleGeometryTest {
     assertEquals(bCrossA, b.cross(a));
   }
 
+  /**
+   * Scenario: Reflecting a vector approaching at 45°
+   * Given v ← vector(1, -1, 0)
+   * And n ← vector(0, 1, 0)
+   * When r ← reflect(v, n)
+   * Then r = vector(1, 1, 0)
+   */
+  @Test
+  public void testReflectingVectorApproachingAt45Degrees() {
+    Vector v = new Vector(1, -1, 0);
+    Vector n = new Vector(0, 1, 0);
+
+    Vector r = v.reflect(n);
+    assertEquals(new Vector(1,1,0), r);
+  }
+
+  /**
+   * Scenario: Reflecting a vector off a slanted surface
+   * Given v ← vector(0, -1, 0)
+   * And n ← vector(√2/2, √2/2, 0)
+   * When r ← reflect(v, n)
+   * Then r = vector(1, 0, 0)
+   */
+  @Test
+  public void testReflectingVectorOffSlantedSurface() {
+    double val = Math.sqrt(2)/2;
+
+    Vector v = new Vector(0, -1, 0);
+    Vector n = new Vector(val, val, 0);
+    Vector r = v.reflect(n);
+
+    assertEquals(new Vector(1,0,0), r);
+  }
 
 }

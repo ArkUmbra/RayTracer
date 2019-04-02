@@ -1,6 +1,8 @@
 package com.arkumbra.raytracer.canvas;
 
+import com.arkumbra.raytracer.geometry.Calc;
 import com.arkumbra.raytracer.geometry.Tuple;
+import com.arkumbra.raytracer.light.Material;
 
 public class Colour extends Tuple {
 
@@ -38,4 +40,17 @@ public class Colour extends Tuple {
     return w();
   }
 
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof Tuple) {
+      Tuple other = (Tuple) obj;
+
+      return Calc.approxEqual(x(), other.x()) &&
+          Calc.approxEqual(y(), other.y()) &&
+          Calc.approxEqual(z(), other.z()) &&
+          Calc.approxEqual(w(), other.w());
+    }
+
+    return false;
+  }
 }

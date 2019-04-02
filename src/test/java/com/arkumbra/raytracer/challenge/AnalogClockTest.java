@@ -61,12 +61,6 @@ public class AnalogClockTest {
     drawRotateY(twelve, 4 * Math.PI / 6, sceneCanvas);
     drawRotateY(twelve, 5 * Math.PI / 6, sceneCanvas);
     drawRotateY(twelve, 6 * Math.PI / 6, sceneCanvas);
-//    drawRotateY(twelve, 6 *Math.PI / 6, sceneCanvas);
-//    drawRotateY(twelve, 5 * Math.PI / 6, sceneCanvas);
-//    drawRotateY(twelve, 4 * Math.PI / 6, sceneCanvas);
-//    drawRotateY(twelve, 3 * Math.PI / 6, sceneCanvas);
-//    drawRotateY(twelve, 2 * Math.PI / 6, sceneCanvas);
-//    drawRotateY(twelve, Math.PI / 6, sceneCanvas);
 
     new PPMPrinter().writePPMFile("build", "clockxz.ppm", sceneCanvas);
   }

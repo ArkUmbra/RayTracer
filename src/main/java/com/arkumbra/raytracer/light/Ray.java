@@ -24,7 +24,7 @@ public class Ray {
   }
 
   public Tuple calcPosition(double unitsOfTime) {
-    return origin.add(direction.multiple(unitsOfTime));
+    return origin.add(direction.multiply(unitsOfTime));
   }
 
   public Ray transform(Matrix matrix) {

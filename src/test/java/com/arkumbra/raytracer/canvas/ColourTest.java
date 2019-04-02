@@ -30,7 +30,7 @@ public class ColourTest {
     float scalar = 2;
 
     Colour expected = new Colour(0.4, 0.6, 0.8);
-    assertEquals(expected, c1.multiple(scalar));
+    assertEquals(expected, c1.multiply(scalar));
   }
 
   @Test

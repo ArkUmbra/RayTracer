@@ -32,6 +32,22 @@ public class Tuple {
     return w;
   }
 
+  public void setX(double x) {
+    this.x = x;
+  }
+
+  public void setY(double y) {
+    this.y = y;
+  }
+
+  public void setZ(double z) {
+    this.z = z;
+  }
+
+  public void setW(double w) {
+    this.w = w;
+  }
+
   /**
    *
    * @param other
@@ -43,7 +59,7 @@ public class Tuple {
     double newZ = this.z() + other.z();
     double newW = this.w() + other.w();
 
-    return TupleFactory.create(newX, newY, newZ, newW);
+    return TupleFactory.create(getClass(), newX, newY, newZ, newW);
   }
 
   /**
@@ -65,11 +81,19 @@ public class Tuple {
    * @param scalar
    * @return new Tuple instance
    */
-  public Tuple multiple(double scalar) {
+  public Tuple multiply(double scalar) {
     double newX = this.x() * scalar;
     double newY = this.y() * scalar;
     double newZ = this.z() * scalar;
     double newW = this.w() * scalar;
+
+    return TupleFactory.create(getClass(), newX, newY, newZ, newW);
+  }
+  public Tuple multiply(Tuple other) {
+    double newX = this.x() * other.x();
+    double newY = this.y() * other.y();
+    double newZ = this.z() * other.z();
+    double newW = this.w() * other.w();
 
     return TupleFactory.create(getClass(), newX, newY, newZ, newW);
   }

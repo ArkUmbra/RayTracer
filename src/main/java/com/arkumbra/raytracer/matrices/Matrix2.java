@@ -43,7 +43,7 @@ public class Matrix2 extends Matrix {
   // TODO errr
   @Override
   public Tuple multiply(Tuple tuple) {
-    throw new UnsupportedOperationException("Don't yet know how to multiple Matrix2 by Tuple");
+    throw new UnsupportedOperationException("Don't yet know how to multiply Matrix2 by Tuple");
   }
 
   /*

@@ -12,4 +12,22 @@ public class Vector extends Tuple {
     super(x, y, z, w);
   }
 
+  public Vector reflect(Vector normal) {
+    // return in - normal * 2 * dot(in, normal)
+    return (Vector)this.minus(
+        normal.multiply(2).multiply(
+          this.dotProd(normal)
+    ));
+  }
+
+//  @Override
+//  public Vector normalize() {
+//    return (Vector)super.normalize();
+//  }
+//
+//  @Override
+//  public Vector negate() {
+//    return (Vector)super.negate();
+//  }
+
 }
